@@ -3,7 +3,7 @@ from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from config import Config
 from helper_fns.helper import USER_DATA
 from helper_fns.doprax import get_bots, get_resources, bot_action
-from helper_fns.helper import savetoken
+from helper_fns.helper import savetoken, deletetoken
 
 
 ############Variables##############
@@ -41,7 +41,7 @@ async def newbt(client, callback_query):
         
         
         
-        if txt.startswith("addbot-"):
+        elif txt.startswith("addbot-"):
             reply = await client.send_message(chat_id=user_id, text="⏳Connecting Please Wait...")
             datam = txt.split("-")
             user_name = datam[-1]
@@ -72,7 +72,7 @@ async def newbt(client, callback_query):
                 await client.send_message(chat_id=user_id, text=f"❗Error: {str(e)}\n\n{str(bots_data)}")
                 return
             
-        if txt.startswith("bot-"):
+        elif txt.startswith("bot-"):
             reply = await client.send_message(chat_id=user_id, text="⏳Connecting Please Wait...")
             datam = txt.split("-")
             user_name = datam[-1]
@@ -125,7 +125,7 @@ async def newbt(client, callback_query):
             return
     
     
-        if txt.startswith("botaction-"):
+        elif txt.startswith("botaction-"):
             reply = await client.send_message(chat_id=user_id, text="⏳Connecting Please Wait...")
             datam = txt.split("-")
             user_name = datam[-1]
@@ -154,6 +154,17 @@ async def newbt(client, callback_query):
                 await client.send_message(chat_id=user_id, text=f"{str(action_data['msg'])}")
             except:
                 await client.send_message(chat_id=user_id, text=f"{str(action_data)}")
+            return
+        
+        
+        elif txt.startswith("delete-"):
+            datam = txt.split("-")
+            user_name = datam[-1]
+            delete_result = await deletetoken(user_id, user_name)
+            if delete_result:
+                await client.send_message(chat_id=user_id, text=f"✅Account Removed Successfully.")
+            else:
+                await client.send_message(chat_id=user_id, text=f"❌Failed To Remove Account.")
             return
         
         return

@@ -5,7 +5,7 @@ from pyrogram import Client, idle
 
 
 app = Client(
-    "Doprax_Manager",
+    "Doprax_Managery",
     api_id=Config.API_ID,
     api_hash=Config.API_HASH,
     bot_token=Config.TOKEN,

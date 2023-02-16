@@ -155,7 +155,7 @@ async def addaccount(client, message):
         await client.send_message(chat_id=user_id, text=f"✅Account Saved Successfully.\n\n\n{str(bot_msg)}")
         return
     except Exception as e:
-        await client.send_message(chat_id=user_id, text=f"❗Error: {str(e)}")
+        await client.send_message(chat_id=user_id, text=f"❗Error: {str(e)}\n\n\n{str(bots_data)}")
         return
 
 
@@ -306,3 +306,35 @@ async def sudo_delete(client, message):
         await client.send_message(chat_id=user_id,
                                 text=f"❌Only Authorized Users Can Use This Command")
         return
+
+
+###############delete account#################
+@Client.on_message(filters.command(["removeaccount"]) & filters.private)
+async def removeaccounts(client, message):
+    user_id = message.chat.id
+    userx = message.from_user.id
+    if userx not in sudo_users:
+                        await client.send_message(chat_id=user_id,
+                           text="❌Not Authorized")
+                        return
+    try:
+         Available_Gits = list(USER_DATA()[user_id]['gtoken'].keys())
+         print(Available_Gits)
+    except:
+        await client.send_message(chat_id=user_id,
+                            text="❗No Saved Login Found, Login First With /addcookies")
+        return
+    if len(Available_Gits)==0:
+        await client.send_message(chat_id=user_id,
+                           text="❗No Saved Login Found, Login First With /addcookies")
+        return
+    GITS_Names = []
+    n = 1
+    for user in Available_Gits:
+        datam = f"{str(n)}. {str(user)}"
+        keyboard = [InlineKeyboardButton(datam, callback_data=f"delete-{str(user)}")]
+        GITS_Names.append(keyboard)
+        n = n + 1
+    await client.send_message(chat_id=user_id,
+                                    text=f'⏺️Choose Account', reply_markup=InlineKeyboardMarkup(GITS_Names))
+    return
